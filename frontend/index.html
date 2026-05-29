@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Bank Simulator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-bar">
+                <span class="logo-icon">🏦</span>
+                <h1>Neon Bank Simulator</h1>
+            </div>
+            <div id="user-info-panel" class="user-info-panel">
+                <span>Welcome, <strong id="user-name-display">User</strong></span>
+                <button id="logout-btn" class="logout-btn">Log Out</button>
+            </div>
+            <nav id="main-nav" class="nav">
+                <a href="#balance" class="nav-link active-nav" data-section="balance">Dashboard</a>
+                <a href="#deposit" class="nav-link" data-section="deposit">Deposit</a>
+                <a href="#withdraw" class="nav-link" data-section="withdraw">Withdraw</a>
+                <a href="#history" class="nav-link" data-section="history">History</a>
+                <a href="#fd-compare" class="nav-link" data-section="fd-compare">FD Calc</a>
+                <a href="#loan" class="nav-link" data-section="loan">Loan Calc</a>
+            </nav>
+        </header>
+
+        <main id="main-content" class="main-content">
+
+            <!-- Auth Section -->
+            <section id="auth" class="section active">
+                <div class="auth-wrapper">
+                    <div class="card auth-card">
+                        <div class="auth-logo">🏦</div>
+                        <h2>Create Your Account</h2>
+                        <p class="subtitle">Enter your details to open your digital bank account.</p>
+                        <form id="auth-form" class="form">
+                            <input type="text" id="auth-name" placeholder="Full Name" required />
+                            <input type="email" id="auth-email" placeholder="Email Address" required />
+                            <button type="submit" class="btn btn-primary">Open Account</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Balance Dashboard -->
+            <section id="balance" class="section">
+                <!-- Account Info Card -->
+                <div class="card account-card">
+                    <div class="account-card-header">
+                        <div>
+                            <p class="card-label">ACCOUNT HOLDER</p>
+                            <p id="dash-name" class="card-value-large">—</p>
+                        </div>
+                        <div class="account-badge">SAVINGS</div>
+                    </div>
+                    <div class="account-card-body">
+                        <div class="account-field">
+                            <p class="card-label">EMAIL</p>
+                            <p id="dash-email" class="card-value">—</p>
+                        </div>
+                        <div class="account-field">
+                            <p class="card-label">ACCOUNT NUMBER</p>
+                            <p id="dash-acno" class="card-value mono">—</p>
+                        </div>
+                        <div class="account-field">
+                            <p class="card-label">IFSC CODE</p>
+                            <p id="dash-ifsc" class="card-value mono">—</p>
+                        </div>
+                        <div class="account-field">
+                            <p class="card-label">ACCOUNT TYPE</p>
+                            <p class="card-value">Savings Account</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Card -->
+                <div class="card balance-container">
+                    <p class="subtitle">Available Balance</p>
+                    <p id="balance-display" class="balance-amount">$0.00</p>
+                    <div class="quick-btns">
+                        <button class="btn btn-outline" onclick="switchTo('deposit')">+ Deposit</button>
+                        <button class="btn btn-outline-danger" onclick="switchTo('withdraw')">- Withdraw</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deposit Section -->
+            <section id="deposit" class="section">
+                <div class="card">
+                    <h2>Add Funds</h2>
+                    <p class="subtitle">Deposit money securely into your account.</p>
+                    <form id="deposit-form" class="form">
+                        <input type="number" id="deposit-amount" placeholder="Enter amount to deposit" min="0" step="0.01" required />
+                        <button type="submit" class="btn btn-primary">Deposit Securely</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Withdraw Section -->
+            <section id="withdraw" class="section">
+                <div class="card">
+                    <h2>Withdraw Funds</h2>
+                    <p class="subtitle">Transfer money from your account instantly.</p>
+                    <form id="withdraw-form" class="form">
+                        <input type="number" id="withdraw-amount" placeholder="Enter amount to withdraw" min="0" step="0.01" required />
+                        <button type="submit" class="btn btn-primary">Withdraw Instantly</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Transaction History Section -->
+            <section id="history" class="section">
+                <div class="card">
+                    <h2>Recent Transactions</h2>
+                    <p class="subtitle">Review your deposit and withdrawal history.</p>
+                    <ul id="history-list" class="history-list"></ul>
+                </div>
+            </section>
+
+            <!-- FD Calculator Section -->
+            <section id="fd-compare" class="section">
+                <div class="card">
+                    <h2>Fixed Deposit Calculator</h2>
+                    <p class="subtitle">Compare FD interest rates across top banks and calculate your returns.</p>
+                    <div class="calc-form-grid">
+                        <input type="number" id="fd-principal" placeholder="Principal Amount (₹)" min="100" />
+                        <input type="number" id="fd-years" placeholder="Duration (Years)" min="1" max="20" />
+                        <button type="button" id="fd-calc-btn" class="btn btn-primary">Calculate</button>
+                    </div>
+                    <div id="fd-calc-result" class="calc-result-box" style="display:none;"></div>
+                    <table class="fd-table">
+                        <thead>
+                            <tr>
+                                <th>Bank</th>
+                                <th>FD Rate (p.a.)</th>
+                                <th>Loan Rate (p.a.)</th>
+                                <th>Maturity Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fd-tbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Loan Calculator Section -->
+            <section id="loan" class="section">
+                <div class="card">
+                    <h2>Loan &amp; EMI Calculator</h2>
+                    <p class="subtitle">Calculate monthly EMI and total interest payable across all banks.</p>
+                    <div class="calc-form-grid">
+                        <input type="number" id="loan-amount" placeholder="Loan Amount (₹)" min="1000" />
+                        <input type="number" id="loan-years" placeholder="Tenure (Years)" min="1" max="30" />
+                        <button type="button" id="loan-calc-btn" class="btn btn-primary">Calculate EMI</button>
+                    </div>
+                    <div id="loan-calc-result" class="calc-result-box" style="display:none;"></div>
+                    <table class="fd-table">
+                        <thead>
+                            <tr>
+                                <th>Bank</th>
+                                <th>Loan Rate (p.a.)</th>
+                                <th>Monthly EMI</th>
+                                <th>Total Interest</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loan-tbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
